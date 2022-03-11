@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List pro</title>
+    <style>
+        .product {
+            border: 2px solid #ccc;
+            height: 100px;
+            width: fit-content;
+            display: inline-block;
+            border-radius: 3px;
+            margin: 10px;
+            padding: 10px 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+    </div>
+    <script>
+        const URL_API = 'https://621ccde8768a4e1020b5b14b.mockapi.io/v1/product/'
+        fetch(URL_API)
+            .then(rs => rs.json())
+            .then(rs => {
+                let root = document.querySelector('#root')
+                for (item of rs) {
+                    let product =
+                        `<div class="product" id="${item.id}" onclick="deleteProduct('${item.id}')">
+                            Ten: ${item.name}
+                                <br>
+                            Gia: ${item.price}
+                        </div>`
+                    root.innerHTML += product
+                }
+
+            })
+
+        function deleteProduct(id) {
+            fetch(URL_API + id, { method: 'delete' })
+                .then(rs => rs.json())
+                .then(rs => {
+                    document.getElementById(id).style.display = 'none'
+                })
+        }
+    </script>
+</body>
+
+</html>
